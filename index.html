@@ -585,7 +585,7 @@ const W=[
   imgs:['borders-main','borders-2','borders-3','borders-4']}
 ];
 let LANG='en';
-try{LANG=localStorage.getItem('rt-lang')||((navigator.language||'').startsWith('es')?'es':'en')}catch(e){}
+try{LANG=localStorage.getItem('rt-lang')||'en'}catch(e){}
 const L=a=>Array.isArray(a)?a[LANG==='es'?1:0]:a;
 const UI={en:{close:'Close',copy:'Copy email',copied:'Copied',sel:'Selected',dark:'Dark mode',light:'Light mode',lang:'Cambiar a español',open:'Open'},es:{close:'Cerrar',copy:'Copiar email',copied:'Copiado',sel:'Seleccionado',dark:'Modo oscuro',light:'Modo claro',lang:'Switch to English',open:'Abrir'}};
 
