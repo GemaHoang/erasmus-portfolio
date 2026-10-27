@@ -1,0 +1,693 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Red Thread</title>
+<meta name="description" content="Red Thread: jewellery and metal by Gema Phuong Hoang Chu. Connection, fate and borders.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&text=%E8%B5%A4%E3%81%84%E7%B3%B8&display=swap">
+<style>
+/* Layout: one red thread drawn by the scroll through a sequence of full-width scenes — hero slideshow, hover index, pinned horizontal collection, B/W→colour galleries */
+:root{
+  --paper:#DBD9D4; --paper-2:#CECBC5; --ink:#141313; --soft:#55514F;
+  --night:#1B1A1A; --cream:#EEEBE5; --red:#8E1016; --red-hi:#B01A21;
+  --line:rgba(20,19,19,.5);
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --jp:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+  --g:clamp(16px,3.6vw,60px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#191818;--paper-2:#242222;--ink:#ECE8E1;--soft:#A7A19A;--night:#0E0D0D;--red:#9C141B;--red-hi:#D2353C;--line:rgba(236,232,225,.4);color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#191818;--paper-2:#242222;--ink:#ECE8E1;--soft:#A7A19A;--night:#0E0D0D;--red:#9C141B;--red-hi:#D2353C;--line:rgba(236,232,225,.4);color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{overflow-x:clip;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 14px/1.65 var(--mono);-webkit-font-smoothing:antialiased;overflow-x:clip;transition:background .4s,color .4s}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.2;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+img{max-width:100%;display:block}
+a{color:inherit}
+p{margin:0}
+:focus-visible{outline:2px solid var(--red-hi);outline-offset:3px}
+button{font:inherit;color:inherit}
+.wrap{padding-inline:var(--g);max-width:1480px;margin-inline:auto;position:relative;z-index:3}
+section{position:relative;scroll-margin-top:50px}
+.cap{font:500 11px/1.55 var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.note{border-left:3px solid var(--red-hi);padding-left:12px;font:500 11px/1.6 var(--mono);letter-spacing:.09em;text-transform:uppercase;max-width:28ch}
+.t{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.84;letter-spacing:-.025em;margin:0}
+.it{font-family:var(--display);font-style:italic;text-transform:none;letter-spacing:0}
+.num{font-family:var(--display);color:var(--red-hi);text-decoration:line-through;text-decoration-thickness:2px;line-height:1}
+.kanji{font-family:var(--jp);writing-mode:vertical-rl;line-height:1.25}
+.bwc img{filter:grayscale(1) contrast(1.06);transition:filter .7s ease}
+.bwc:hover img,.bwc:focus-visible img{filter:none}
+.dark{background:var(--night);color:var(--cream);--ink:var(--cream);--line:rgba(238,235,229,.5)}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;padding-block:clamp(70px,10vw,140px) clamp(28px,3vw,44px)}
+.sh h2{font-size:clamp(56px,9vw,140px)}
+
+/* scroll thread */
+#thread{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:2;overflow:visible}
+#thread path{fill:none;stroke:var(--red-hi);stroke-width:1.8;stroke-linecap:round}
+
+/* bar */
+.bar{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .3s,backdrop-filter .3s}
+.bar.solid{background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:12px}
+.home{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.home b{font-family:var(--jp);font-weight:400;color:var(--red-hi);font-size:14px;letter-spacing:0}
+.bar nav{display:flex;align-items:center;gap:2px}
+.bar nav a{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:9px 9px;position:relative}
+.bar nav a::after{content:"";position:absolute;left:9px;right:9px;bottom:4px;height:1.5px;background:var(--red-hi);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.bar nav a:hover::after{transform:scaleX(1)}
+.tg{all:unset;cursor:pointer;box-sizing:border-box;height:30px;min-width:34px;margin-left:4px;padding:0 9px;display:inline-grid;place-items:center;border:1px solid color-mix(in srgb,var(--ink) 30%,transparent);font:500 11px/1 var(--mono);letter-spacing:.08em}
+.tg:hover{border-color:var(--red-hi);color:var(--red-hi)}
+.tg:focus-visible{outline:2px solid var(--red-hi);outline-offset:2px}
+.sun{display:none}
+:root[data-theme="dark"] .sun{display:inline}:root[data-theme="dark"] .moon{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sun{display:inline}:root:not([data-theme="light"]) .moon{display:none}}
+@media (max-width:780px){.bar nav .opt{display:none}}
+
+/* hero */
+.hero{position:relative;height:100svh;min-height:660px;max-height:1200px;overflow:hidden;z-index:3}
+.hero .word{position:absolute;margin:0;font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.78;letter-spacing:-.04em;font-size:clamp(110px,21.5vw,440px);white-space:nowrap;will-change:transform}
+.hero .w1{left:calc(var(--g) - .04em);top:clamp(64px,11svh,130px)}
+.hero .w2{right:calc(var(--g) - .02em);bottom:clamp(120px,19svh,210px)}
+.hero .solid{color:var(--ink);z-index:1}
+.hero .ghost{color:transparent;-webkit-text-stroke:1.5px var(--paper);z-index:4;pointer-events:none}
+.hero .word span{display:inline-block;animation:rise 1.2s cubic-bezier(.2,.8,.2,1) both}
+.hero .w2 span{animation-delay:.15s}
+@keyframes rise{from{transform:translateY(40%);opacity:0}to{transform:none;opacity:1}}
+.hero .stage{position:absolute;left:50%;top:50%;height:min(66svh,760px);aspect-ratio:3/4.1;transform:translate(-50%,-52%);z-index:3;will-change:transform}
+.hero .stage .blk{position:absolute;background:var(--red)}
+.hero .stage .b1{left:-30%;top:-7%;width:62%;height:46%;z-index:-1}
+.hero .stage .b2{right:-18%;bottom:-6%;width:36%;height:30%;z-index:-1}
+.slides{position:absolute;inset:0;overflow:hidden;background:var(--paper-2)}
+.slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity 1.2s ease,transform 6s ease}
+.slides img.on{opacity:1;transform:scale(1)}
+.slides img:first-child{opacity:1}
+.slides.ready img:first-child:not(.on){opacity:0}
+.slidecap{position:absolute;left:0;right:0;bottom:-28px;display:flex;justify-content:space-between;gap:12px}
+.dots{display:flex;gap:6px;align-items:center}
+.dots button{all:unset;cursor:pointer;width:18px;height:2px;background:color-mix(in srgb,var(--ink) 30%,transparent);transition:width .3s}
+.dots button[aria-current="true"]{background:var(--red-hi);width:30px}
+.dots button:focus-visible{outline:2px solid var(--red-hi);outline-offset:4px}
+.hero .kj{position:absolute;right:calc(var(--g) + 4px);top:clamp(80px,13svh,150px);font-family:var(--jp);writing-mode:vertical-rl;font-size:clamp(34px,4.4vw,78px);line-height:1.1;color:var(--red-hi);z-index:2}
+.hero .note1{position:absolute;left:var(--g);top:calc(clamp(64px,11svh,130px) + clamp(90px,17vw,350px));z-index:4}
+.hero .foot{position:absolute;left:0;right:0;bottom:0;z-index:4;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:20px;padding:0 var(--g) 24px}
+.hero .foot .sub{font-size:clamp(18px,1.7vw,26px);line-height:1.2;max-width:24ch}
+.hero .foot .mid{text-align:center}
+.hero .foot .rt{justify-self:end;text-align:right;display:grid;gap:4px;justify-items:end}
+.hero .year{font-size:clamp(40px,4.2vw,70px)}
+.hero .hthread{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.hero .hthread path{fill:none;stroke:var(--red-hi);stroke-width:2;vector-effect:non-scaling-stroke;stroke-dasharray:4000;animation:draw 3.4s .5s cubic-bezier(.6,.1,.2,1) both}
+@keyframes draw{from{stroke-dashoffset:4000}to{stroke-dashoffset:0}}
+.scrollcue{display:inline-flex;align-items:center;gap:8px}
+.scrollcue i{display:block;width:1px;height:26px;background:var(--red-hi);animation:cue 1.8s ease-in-out infinite;transform-origin:top}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:760px){
+  .hero{height:auto;max-height:none;min-height:0;padding-top:70px;display:grid;gap:18px;padding-inline:var(--g);padding-bottom:26px}
+  .hero .word{position:relative;inset:auto;font-size:30vw}
+  .hero .w2{font-size:20.5vw}
+  .hero .w1,.hero .w2{left:auto;right:auto;top:auto;bottom:auto}
+  .hero .w2{justify-self:end}
+  .hero .ghost{display:none}
+  .hero .stage{position:relative;left:auto;top:auto;transform:none;height:auto;width:72%;justify-self:center;margin-block:-2vw 34px}
+  .hero .kj{top:84px;right:var(--g);font-size:32px}
+  .hero .note1{position:static;order:-1}
+  .hero .foot{position:static;grid-template-columns:1fr;padding:30px 0 0;gap:18px}
+  .hero .foot .mid{text-align:left}
+  .hero .foot .rt{justify-self:start;text-align:left;justify-items:start}
+}
+
+/* marquee */
+.mq{background:var(--red);color:var(--cream);overflow:hidden;white-space:nowrap;padding-block:18px;position:relative;z-index:3}
+.mq div{display:inline-flex;gap:44px;animation:mq 38s linear infinite;font-family:var(--display);font-size:clamp(26px,3vw,42px);font-style:italic}
+.mq span.k{font-family:var(--jp);font-style:normal}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* statement */
+.state{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;padding-block:clamp(80px,11vw,160px) 20px}
+.state .pic{grid-column:1/5;position:relative;align-self:start}
+.state .pic .blk{position:absolute;right:-12%;bottom:-6%;width:30%;height:40%;background:var(--red)}
+.state .pic img{position:relative;z-index:1;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%}
+.state .txt{grid-column:6/13;display:grid;gap:28px;align-content:start}
+.state .big{font-family:var(--display);font-size:clamp(30px,3.6vw,54px);line-height:1.1;letter-spacing:-.01em;text-wrap:balance}
+.state .big em{color:var(--red-hi)}
+.state .cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;font-size:13.5px}
+.state .facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:16px;border-top:1.5px solid var(--line);padding-top:16px}
+@media (max-width:900px){.state .pic,.state .txt{grid-column:1/-1}.state .pic{max-width:400px}.state .cols{grid-template-columns:1fr}}
+
+/* index */
+.idx{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--line)}
+.idx li{border-bottom:1.5px solid var(--line)}
+.idx button{all:unset;cursor:pointer;box-sizing:border-box;width:100%;display:grid;grid-template-columns:4em 1fr auto auto;gap:20px;align-items:center;padding:clamp(14px,1.8vw,24px) 0;position:relative}
+.idx .n{color:var(--red-hi);font:500 12px/1 var(--mono)}
+.idx .nm{font-family:var(--display);font-size:clamp(34px,5.4vw,82px);line-height:1;letter-spacing:-.02em;transition:transform .5s cubic-bezier(.2,.8,.2,1),color .3s}
+.idx .ds{text-align:right;color:var(--soft)}
+.idx .arr{font-family:var(--display);font-size:28px;transition:transform .4s}
+.idx .th{display:none}
+.idx button:hover .nm,.idx button:focus-visible .nm{transform:translateX(18px);color:var(--red-hi)}
+.idx button:hover .arr{transform:rotate(-45deg)}
+.idx button:focus-visible{outline:2px solid var(--red-hi);outline-offset:4px}
+.peek{position:fixed;left:0;top:0;width:260px;aspect-ratio:3/4;pointer-events:none;z-index:45;opacity:0;transform:translate(-50%,-50%) scale(.9);transition:opacity .25s,transform .25s;box-shadow:14px 14px 0 var(--red)}
+.peek img{width:100%;height:100%;object-fit:cover}
+.peek.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+@media (hover:none),(max-width:780px){.peek{display:none}.idx button{grid-template-columns:3em 64px 1fr auto}.idx .th{display:block;width:64px;aspect-ratio:1;object-fit:cover}.idx .ds{display:none}}
+
+/* pinned collection */
+.hs{position:relative;background:var(--night);color:var(--cream);--line:rgba(238,235,229,.5)}
+.hs .pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:minmax(0,1fr);padding-top:70px}
+.hs .head{display:flex;justify-content:space-between;align-items:end;gap:20px;width:100%}
+.hs .foot{width:100%}
+.hs .head h2{font-size:clamp(46px,6.6vw,104px)}
+.track{display:flex;gap:clamp(18px,2.4vw,36px);align-items:center;padding-inline:var(--g);will-change:transform}
+.card{all:unset;cursor:pointer;flex:0 0 auto;width:min(clamp(260px,30vw,440px),calc((100svh - 300px)*.75));display:grid;gap:14px;position:relative}
+.card:focus-visible{outline:2px solid var(--red-hi);outline-offset:6px}
+.card .ph{position:relative;aspect-ratio:3/4;overflow:hidden;background:#000}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.card:hover .ph img{transform:scale(1.05)}
+.card .ph .n{position:absolute;left:14px;top:12px;font-family:var(--display);font-size:34px;color:var(--cream);text-decoration:line-through;text-decoration-color:var(--red-hi);text-decoration-thickness:2px;mix-blend-mode:difference}
+.card .nm{font-family:var(--display);font-size:clamp(26px,2.4vw,36px);line-height:1}
+.card .ds{color:rgba(238,235,229,.7)}
+.card.tall{width:min(clamp(240px,24vw,360px),calc((100svh - 300px)*.652))}
+.card.tall .ph{aspect-ratio:3/4.6}
+.hs .foot{display:flex;justify-content:space-between;align-items:center;padding-block:18px 26px}
+.prog{flex:1;max-width:320px;height:2px;background:rgba(238,235,229,.2);position:relative;margin-left:20px}
+.prog i{position:absolute;inset:0;background:var(--red-hi);transform-origin:left;transform:scaleX(0)}
+.hs.static .pin{position:relative;height:auto;padding-bottom:10px}
+.hs.static .foot{display:none}
+.hs.static .track{overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--g);padding-bottom:18px;scrollbar-width:thin}
+.hs.static .card{scroll-snap-align:start}
+.hs.static .card{width:min(78vw,340px)}
+
+/* process */
+.proc{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.proc .l{grid-column:1/5;display:grid;gap:26px;align-content:start;position:sticky;top:90px;align-self:start}
+.proc .l h3{font-size:clamp(46px,5.4vw,84px)}
+.proc .steps{grid-column:6/13;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.proc .step{all:unset;cursor:zoom-in;display:grid;gap:8px}
+.proc .step img{aspect-ratio:3/4;width:100%;object-fit:cover}
+.proc .step b{font:500 11px/1 var(--mono);color:var(--red-hi);letter-spacing:.08em}
+.proc .step span{font:500 11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.07em}
+.proc .step:focus-visible{outline:2px solid var(--red-hi);outline-offset:3px}
+@media (max-width:900px){.proc .l,.proc .steps{grid-column:1/-1}.proc .l{position:static}.proc .steps{grid-template-columns:repeat(2,1fr)}}
+
+/* drawing */
+.draw-intro{display:grid;grid-template-columns:1fr 1fr;gap:28px 60px;margin-bottom:34px}
+.draw-intro .big{font-family:var(--display);font-style:italic;font-size:clamp(24px,2.5vw,36px);line-height:1.15}
+.mas{columns:4 230px;column-gap:12px}
+.mas button{all:unset;cursor:zoom-in;display:block;margin-bottom:12px;break-inside:avoid;width:100%;background:#fff;position:relative}
+.mas button:focus-visible{outline:2px solid var(--red-hi);outline-offset:3px}
+.mas img{width:100%}
+.mas .red-edge{box-shadow:-8px 0 0 var(--red)}
+@media (max-width:760px){.draw-intro{grid-template-columns:1fr}}
+
+/* live art */
+.live{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;align-items:start}
+.live .main{grid-column:1/6;position:relative}
+.live .main .blk{position:absolute;right:-6%;bottom:-5%;width:28%;height:40%;background:var(--red)}
+.live .main button{all:unset;cursor:zoom-in;display:block;position:relative;z-index:1}
+.live .main img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 40%}
+.live .txt{grid-column:7/13;display:grid;gap:22px;align-content:start}
+.live .txt .big{font-family:var(--display);font-style:italic;font-size:clamp(24px,2.5vw,36px);line-height:1.15}
+.live .row{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start;margin-top:clamp(30px,4vw,60px)}
+.live .row button{all:unset;cursor:zoom-in;display:block}
+.live .row button{width:100%}
+.live .row img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:50% 50%}
+.live .row figure{margin:0;display:grid;gap:8px}
+@media (max-width:900px){.live .main,.live .txt{grid-column:1/-1}.live .main{max-width:440px}.live .row{grid-template-columns:1fr 1fr}}
+
+/* before + cv */
+.before{display:grid;grid-template-columns:5fr 7fr;gap:clamp(24px,4vw,64px);padding-bottom:clamp(60px,8vw,110px)}
+.before .pics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.before .pics button{all:unset;cursor:zoom-in;display:block}
+.before .pics img{width:100%;aspect-ratio:1;object-fit:cover}
+.before .pics .w2{grid-column:span 2}
+.before .pics .w2 img{aspect-ratio:2/1}
+.before .body{display:grid;gap:14px;font-size:13.5px;max-width:52ch}
+.cv{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);border-top:1.5px solid var(--line);padding-block:34px 0}
+.cv .lbl{color:#E0555B;display:block;margin-bottom:10px}
+.cv dl{margin:0;display:grid;grid-template-columns:5.2em 1fr}
+.cv dt,.cv dd{margin:0;padding:9px 0;border-top:1px solid var(--line);font:500 11px/1.55 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.cv dt{color:#E0555B;font-variant-numeric:tabular-nums}
+.cv .tech{font-family:var(--display);font-size:clamp(20px,1.9vw,26px);line-height:1.25}
+@media (max-width:900px){.before,.cv{grid-template-columns:1fr}}
+
+/* next */
+.next{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;align-items:center}
+.next .img{grid-column:1/6;position:relative}
+.next .img .blk{position:absolute;left:-6%;top:-5%;width:40%;height:28%;background:var(--red)}
+.next .img img{position:relative;z-index:1;width:100%;aspect-ratio:4/5;object-fit:cover}
+.next .txt{grid-column:7/13;display:grid;gap:24px}
+.next .route{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.08em}
+.next .route i{flex:1;height:0;border-top:1.5px dashed var(--red-hi)}
+.next ol{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--line)}
+.next li{display:grid;grid-template-columns:3em 1fr;gap:10px;padding:14px 0;border-bottom:1.5px solid var(--line)}
+.next li b{color:var(--red-hi);font:500 12px/1.7 var(--mono)}
+.next li strong{display:block;font-family:var(--display);font-weight:400;font-size:22px;line-height:1.2}
+@media (max-width:900px){.next .img,.next .txt{grid-column:1/-1}.next .img{max-width:440px}}
+
+/* thanks */
+.thanks{background:var(--red);color:var(--cream);overflow:hidden;margin-top:clamp(70px,10vw,140px);padding-block:clamp(60px,8vw,110px) 40px;position:relative;z-index:3}
+.thanks h2{font-size:clamp(90px,14vw,220px);color:var(--cream)}
+.thanks h2 .it{display:block;padding-left:1.4em}
+.thanks .kanji{position:absolute;right:var(--g);top:40px;font-size:40px}
+.thanks .foot{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:24px;margin-top:clamp(40px,6vw,90px);position:relative;z-index:2}
+.mail{font-family:var(--display);font-size:clamp(26px,3.6vw,52px);user-select:all;line-height:1.1}
+.copy{all:unset;cursor:pointer;font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--cream);padding:11px 14px;transition:background .2s,color .2s}
+.copy:hover{background:var(--cream);color:var(--red)}
+.copy:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+.thanks svg{position:absolute;left:0;bottom:120px;width:100%;height:200px;pointer-events:none}
+.thanks svg path{fill:none;stroke:var(--cream);stroke-width:1.6}
+
+/* case sheet */
+dialog.case{border:0;padding:0;margin:0;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;background:var(--paper);color:var(--ink)}
+dialog.case::backdrop{background:rgba(14,13,13,.6)}
+dialog.case[open]{animation:slidein .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes slidein{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.cs{display:grid;grid-template-columns:5fr 7fr;height:100%}
+.cs .l{padding:clamp(22px,3vw,48px) var(--g);display:grid;gap:22px;align-content:start;overflow:auto;border-right:1.5px solid var(--line)}
+.cs .l h3{font-size:clamp(50px,6.4vw,104px)}
+.cs .l .num{font-size:clamp(46px,5vw,72px)}
+.cs .l .body{font-size:13.5px;max-width:46ch}
+.cs dl{margin:0;display:grid;grid-template-columns:auto 1fr;border-top:1.5px solid var(--line)}
+.cs dt,.cs dd{margin:0;padding:9px 0;border-bottom:1.5px solid var(--line);font:500 11px/1.5 var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.cs dt{color:var(--red-hi);padding-right:22px}
+.cs .r{overflow:auto;padding:clamp(22px,3vw,48px);display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.cs .r button{all:unset;cursor:zoom-in;display:block}
+.cs .r button:first-child{grid-column:1/-1}
+.cs .r img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.cs .r button:first-child img{aspect-ratio:auto;max-height:78vh;object-fit:contain;background:var(--paper-2)}
+.cs .ctl{display:flex;gap:8px;flex-wrap:wrap}
+.cs .ctl button,.close{all:unset;cursor:pointer;font:500 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--line);padding:11px 14px}
+.cs .ctl button:hover,.close:hover{border-color:var(--red-hi);color:var(--red-hi)}
+.close{position:absolute;top:16px;right:16px;z-index:3;background:var(--paper)}
+@media (max-width:900px){.cs{grid-template-columns:1fr;overflow:auto;height:auto;min-height:100%}.cs .l,.cs .r{overflow:visible}.cs .l{border-right:0;padding-top:64px}}
+
+/* lightbox */
+dialog.lb{border:0;padding:16px;background:transparent;margin:0;width:100vw;height:100dvh;max-width:100vw;max-height:100dvh}
+dialog.lb[open]{display:grid;place-items:center}
+dialog.lb::backdrop{background:rgba(14,13,13,.94)}
+dialog.lb img{max-width:100%;max-height:calc(100dvh - 60px);object-fit:contain}
+dialog.lb .close{background:transparent;color:#EEEBE5;border-color:#EEEBE5}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="home" href="#top"><b lang="ja">赤い糸</b>Gema Hoang Chu</a>
+    <nav aria-label="Sections">
+      <a href="#works" data-es="Obras">Works</a>
+      <a class="opt" href="#about" data-es="Sobre mí">About</a>
+      <a class="opt" href="#drawing" data-es="Dibujo">Drawing</a>
+      <a class="opt" href="#live">Live art</a>
+      <a class="opt" href="#contact" data-es="Contacto">Contact</a>
+      <button class="tg" id="langBtn" type="button">ES</button>
+      <button class="tg" id="themeBtn" type="button" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/><g class="sun" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<svg id="thread" aria-hidden="true"><path id="threadPath" d=""/></svg>
+
+<!-- HERO -->
+<section class="hero" id="hero" aria-label="Red Thread">
+  <h1 class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Red Thread — Gema Phuong Hoang Chu</h1>
+  <p class="word w1 solid" aria-hidden="true"><span>Red</span></p>
+  <p class="word w2 solid" aria-hidden="true"><span>Thread</span></p>
+  <span class="kj" lang="ja" aria-hidden="true">赤い糸</span>
+  <svg class="hthread" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true"><path d="M-20,560 C160,520 300,600 420,560 C520,526 560,430 520,400 C470,364 420,450 480,500 C560,566 700,520 820,470 C920,428 1040,300 1220,280"/></svg>
+  <div class="stage" id="stage">
+    <span class="blk b1"></span><span class="blk b2"></span>
+    <div class="slides" id="slides">
+      <img src="img/cosmos-worn.jpg" alt="Cosmos Ring worn on the index finger">
+      <img src="img/celestial-1.jpg" alt="Celestial Balance pendant">
+      <img src="img/llf-worn.jpg" alt="Love, Live, Forever cuff on the wrist">
+      <img src="img/skin-worn.jpg" alt="Second Skin cuff">
+      <img src="img/rotating-worn.jpg" alt="Rotating ring worn at the neck">
+      <img src="img/earring-worn.jpg" alt="Frame earring">
+    </div>
+    <div class="slidecap cap"><span id="slideName">Cosmos Ring</span><span class="dots" id="dots"></span></div>
+  </div>
+  <p class="word w1 ghost" aria-hidden="true"><span>Red</span></p>
+  <p class="word w2 ghost" aria-hidden="true"><span>Thread</span></p>
+  <p class="note note1" data-es="Joyería y metal · Madrid">Jewellery &amp; metal · Madrid</p>
+  <div class="foot">
+    <div><p class="sub it" data-es="Una colección sobre conexión, destino y fronteras.">A collection on connection, fate and borders.</p><p class="cap" style="margin-top:8px">Gema Phuong Hoang Chu</p></div>
+    <div class="mid cap"><span class="scrollcue"><i></i><span>Madrid 40.4°N → Riga 56.9°N</span></span></div>
+    <div class="rt"><span class="num year">2027</span><span class="cap" data-es="Erasmus+ · Academia de Arte de Letonia">Erasmus+ · Art Academy of Latvia</span></div>
+  </div>
+</section>
+
+<div class="mq" aria-hidden="true"><div>
+  <span data-es="Conexión">Connection</span><span class="k">赤い糸</span><span data-es="Destino">Fate</span><span class="k">赤い糸</span><span data-es="Fronteras">Borders</span><span class="k">赤い糸</span><span data-es="Fuego">Fire</span><span class="k">赤い糸</span>
+  <span data-es="Conexión">Connection</span><span class="k">赤い糸</span><span data-es="Destino">Fate</span><span class="k">赤い糸</span><span data-es="Fronteras">Borders</span><span class="k">赤い糸</span><span data-es="Fuego">Fire</span><span class="k">赤い糸</span>
+</div></div>
+
+<!-- ABOUT -->
+<section id="about" aria-labelledby="about-h">
+  <div class="wrap state">
+    <div class="pic bwc" tabindex="0"><span class="blk"></span><img src="img/portrait.jpg" alt="Portrait of Gema Hoang Chu"></div>
+    <div class="txt">
+      <p class="note" id="about-h" data-es="Quién soy · Diseñadora, orfebre, ilustradora">Who am I · Designer, maker, illustrator</p>
+      <p class="big" data-es="Me atrae la leyenda del <em>hilo rojo</em>: un hilo invisible que une a quienes están destinados a encontrarse, por lejos que estén.">I am drawn to the legend of the <em>red thread</em>: an invisible thread that joins people destined to meet, however far apart they are.</p>
+      <div class="cols">
+        <p data-es="Mis piezas se preguntan qué nos separa y qué, al final, nos une. Trabajo el movimiento —discos que orbitan, aros que giran— y la superficie: lo que el fuego, la presión y el tiempo hacen al cobre y al latón.">My pieces ask what separates us and what, in the end, connects us. I work with movement — discs that orbit, bands that spin — and with surface: what fire, pressure and time do to copper and brass.</p>
+        <p data-es="Me formé en animación 2D, fui diseñadora gráfica, ilustradora y diseñadora de producto, y fundé dos empresas propias. Volver a estudiar joyería fue una decisión consciente: dominar el metal con mis propias manos.">I trained in 2D animation, worked as a graphic designer, illustrator and product designer, and founded two companies of my own. Returning to study jewellery was a deliberate choice: to master metal with my own hands.</p>
+      </div>
+      <div class="facts cap"><span>Gema Phuong<br>Hoang Chu</span><span data-es="Ilustración<br>Animación 2D">Illustration<br>2D animation</span><span data-es="Diseño<br>Joyería">Design<br>Jewellery</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- INDEX -->
+<section id="works" aria-labelledby="works-h">
+  <div class="wrap">
+    <div class="sh"><h2 id="works-h" class="t" data-es="Obras">Works</h2><p class="note" data-es="Siete obras, un solo hilo. Pasa por encima para ver, pulsa para abrir.">Seven works, one thread. Hover to see, click to open.</p></div>
+    <ol class="idx" id="idx"></ol>
+  </div>
+</section>
+<div class="peek" id="peek" aria-hidden="true"><img alt="" id="peekImg"></div>
+
+<!-- PINNED COLLECTION -->
+<section class="hs" id="collection" aria-labelledby="col-h">
+  <div class="pin">
+    <div class="wrap head"><h2 id="col-h" class="t" data-es="En el <span class=&quot;it&quot;>cuerpo</span>">On the <span class="it">body</span></h2><p class="cap" style="color:rgba(238,235,229,.7)" data-es="Desplaza para recorrer →">Scroll to travel →</p></div>
+    <div class="track" id="track"></div>
+    <div class="wrap foot cap"><span id="colCount">01 / 07</span><span class="prog"><i id="progBar"></i></span></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" aria-labelledby="proc-h">
+  <div class="wrap">
+    <div class="sh" style="padding-bottom:10px"></div>
+    <div class="proc">
+      <div class="l">
+        <p class="note" data-es="Proceso · Cosmos Ring">Process · Cosmos Ring</p>
+        <h3 id="proc-h" class="t" data-es="De chapa<br>a pátina">Sheet<br>to patina</h3>
+        <p data-es="Seis pasos en el banco. Al calentar el latón crece una fina capa de óxido que pasa por dorado, rojo, violeta y azul; detengo el fuego en el color que quiero. Pasa por encima de cada foto para verla en color.">Six steps at the bench. As brass heats, a thin oxide layer moves through gold, red, violet and blue; I stop the flame at the colour I want. Hover each photo to see it in colour.</p>
+      </div>
+      <div class="steps">
+        <button class="step bwc" data-lb type="button"><img src="img/cosmos-p1.jpg" alt="Filing the brass shank" loading="lazy"><b>01</b><span data-es="Formar la caña">Forming the shank</span></button>
+        <button class="step bwc" data-lb type="button"><img src="img/cosmos-p2.jpg" alt="First fitting on the hand" loading="lazy"><b>02</b><span data-es="Primera prueba">First fitting</span></button>
+        <button class="step bwc" data-lb type="button"><img src="img/cosmos-p3.jpg" alt="Texturing a disc" loading="lazy"><b>03</b><span data-es="Texturizado">Texturing</span></button>
+        <button class="step bwc" data-lb type="button"><img src="img/cosmos-p4.jpg" alt="Heat colouring with the torch" loading="lazy"><b>04</b><span data-es="Color al fuego">Heat colouring</span></button>
+        <button class="step bwc" data-lb type="button"><img src="img/cosmos-p5.jpg" alt="Oxidised shank and disc" loading="lazy"><b>05</b><span data-es="Oxidado">Oxidising</span></button>
+        <button class="step bwc" data-lb type="button"><img src="img/cosmos-p6.jpg" alt="Assembling the discs" loading="lazy"><b>06</b><span data-es="Montaje">Assembly</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRAWING -->
+<section id="drawing" aria-labelledby="draw-h">
+  <div class="wrap">
+    <div class="sh"><h2 id="draw-h" class="t" data-es="Dibujo">Drawing</h2><p class="note" data-es="Ecoline · Acuarela · Lápiz · Tinta digital">Ecoline · Watercolour · Pencil · Digital ink</p></div>
+    <div class="draw-intro">
+      <p class="big" data-es="Dibujar es mi manera de diseñar antes de ir al banco.">Drawing is how I design before going to the bench.</p>
+      <p data-es="Estudio cómo los cabujones difuminan la luz y cómo las facetas la atrapan y la fragmentan. Antes del metal hubo veinte años de ilustración: personajes, retratos y animación.">I study how cabochons diffuse light while facets catch and fragment it. Before metal came twenty years of illustration: characters, portraits and animation.</p>
+    </div>
+    <div class="mas">
+      <button data-lb type="button" class="red-edge"><img src="img/borders-main.jpg" alt="Borders Reborn collar rendering" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/port-leaves.jpg" alt="Watercolour portrait with leaves" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/chroma-1.jpg" alt="Gemstone study sheet" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-koi.jpg" alt="Girl with koi headdress" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/rings-2.jpg" alt="Signet ring renderings" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/port-beard.jpg" alt="Ink portrait with grey wash" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-curl.jpg" alt="Curled figure, ink" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/port-couple.jpg" alt="Watercolour double portrait" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/chroma-2.jpg" alt="Cabochon study" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-fairy.jpg" alt="Fairy with golden wings" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/port-green.jpg" alt="Portrait with parrots" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-wings.jpg" alt="Pencil character with wings" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/rings-3.jpg" alt="Ring rendering detail" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/port-yellow.jpg" alt="Line portrait with geometric shapes" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-cat.jpg" alt="Girl held by a giant cat" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-flamenca.jpg" alt="Dancer in red skirt" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-red.jpg" alt="Red-haired curled figure" loading="lazy"></button>
+      <button data-lb type="button"><img src="img/ill-balloon.jpg" alt="Girl in round dress, ink" loading="lazy"></button>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE ART -->
+<section id="live" aria-labelledby="live-h">
+  <div class="wrap">
+    <div class="sh"><h2 id="live-h" class="t" data-es="Live <span class=&quot;it&quot;>art</span>">Live <span class="it">art</span></h2><p class="note" data-es="Eventos · Bodas · Moda en directo">Events · Weddings · Live fashion</p></div>
+    <div class="live">
+      <div class="main"><span class="blk"></span><button data-lb type="button"><img src="img/live-artist.jpg" alt="Gema drawing a live portrait at a wedding" loading="lazy"></button></div>
+      <div class="txt">
+        <p class="big" data-es="Ilustración de moda y retratos en directo, en bodas y eventos.">Live fashion illustration and portraits at weddings and events.</p>
+        <p data-es="Monto un pequeño estudio en el lugar: tinta, acuarela y rotuladores, y una tablet con una foto de referencia rápida. Cada pareja o invitado se dibuja en el momento —el vestido, el movimiento de la tela, un gesto— y se firma, se fecha y se lo llevan a casa ese mismo día.">I set up a small studio at the venue: ink, watercolour and markers, and a tablet with a quick reference photo. Each couple or guest is drawn on the spot — the outfit, the movement of the fabric, a gesture — then signed, dated and taken home the same day.</p>
+        <p data-es="Las mismas habilidades que uso en el banco: leer una silueta rápido, decidir qué dejar fuera y terminar una pieza bajo presión.">The same skills I use at the bench: reading a silhouette fast, choosing what to leave out, and finishing a piece under pressure.</p>
+        <p class="cap" style="color:var(--red-hi)" data-es="Tinta · Acuarela · Rotuladores">Ink · Watercolour · Alcohol markers</p>
+      </div>
+      <div class="row">
+        <figure><button data-lb type="button"><img src="img/live-couple-green.jpg" alt="Live portrait held next to the couple in green" loading="lazy"></button><span class="cap" data-es="Dibujado en el día">Drawn on the day</span></figure>
+        <figure><button data-lb type="button"><img src="img/live-couple-pink.jpg" alt="Live portrait held next to the couple in pink" loading="lazy"></button><span class="cap" data-es="Firmado y fechado">Signed and dated</span></figure>
+        <figure><button data-lb type="button"><img src="img/live-paint.jpg" alt="Watercolour palette and drawing in progress" loading="lazy"></button><span class="cap" data-es="Acuarela">Watercolour</span></figure>
+        <figure><button data-lb type="button"><img src="img/live-guests.jpg" alt="Drawing in front of the guests" loading="lazy"></button><span class="cap" data-es="Frente a los invitados">In front of the guests</span></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE + CV -->
+<section class="dark" id="cv" aria-labelledby="before-h" style="margin-top:clamp(70px,10vw,140px)">
+  <div class="wrap">
+    <div class="sh"><h2 id="before-h" class="t" data-es="Antes del banco">Before the bench</h2><p class="note" data-es="Desde 1998">Since 1998</p></div>
+    <div class="before">
+      <div class="body">
+        <p data-es="De 1998 a 2002 dirigí Hoang Chu SL, diseñando y produciendo bisutería y accesorios. De 2003 a 2011 fundé y dirigí Fushioko, importando decoración, moda y accesorios de China, Tailandia, Japón y Vietnam.">From 1998 to 2002 I ran Hoang Chu SL, designing and producing fashion jewellery and accessories. From 2003 to 2011 I founded and ran Fushioko, importing decor, fashion and accessories from China, Thailand, Japan and Vietnam.</p>
+        <p data-es="En paralelo, una práctica de pequeño formato: colgantes de plástico mágico con mis ilustraciones (Nunca Beses Ranas) y cerámica en miniatura pintada a mano.">Alongside, a small-scale practice: shrink-plastic pendants from my own illustrations (Nunca Beses Ranas) and hand-painted miniature ceramics.</p>
+      </div>
+      <div class="pics">
+        <button data-lb type="button" class="w2"><img src="img/nbr-stand.jpg" alt="Nunca Beses Ranas pendants at a market" loading="lazy"></button>
+        <button data-lb type="button"><img src="img/nbr-heart.jpg" alt="Follow your heart pendant" loading="lazy"></button>
+        <button data-lb type="button"><img src="img/table-1.jpg" alt="Miniature ceramic plates" loading="lazy"></button>
+        <button data-lb type="button"><img src="img/table-3.jpg" alt="Painting a miniature sardine tin" loading="lazy"></button>
+        <button data-lb type="button"><img src="img/nbr-elephant.jpg" alt="Elephant pendant" loading="lazy"></button>
+      </div>
+    </div>
+    <div class="cv">
+      <div><span class="cap lbl" data-es="Formación">Education</span><dl>
+        <dt>2025 —</dt><dd data-es="CFGS Joyería Artística · Escuela de Arte 3, Madrid">Higher diploma, jewellery design · Escuela de Arte 3, Madrid</dd>
+        <dt>2016–17</dt><dd data-es="Máster Diseño de Producto Digital · La Nave Nodriza">Master's, digital product design · La Nave Nodriza</dd>
+        <dt>2014–15</dt><dd data-es="Técnico Superior Aplicaciones Web · IES Cañaveral">Higher technician, web applications · IES Cañaveral</dd>
+        <dt>1998–00</dt><dd data-es="Animación 2D · ESDIP Escuela de Arte">2D animation · ESDIP Escuela de Arte</dd></dl></div>
+      <div><span class="cap lbl" data-es="Experiencia">Experience</span><dl>
+        <dt>2021 —</dt><dd data-es="Senior Product Designer · Solera">Senior product designer · Solera</dd>
+        <dt>2015–21</dt><dd data-es="Diseñadora de producto · Secuoyas">Product &amp; design systems · Secuoyas</dd>
+        <dt>2001–15</dt><dd data-es="Diseñadora gráfica e ilustradora · Freelance">Graphic designer &amp; illustrator · Freelance</dd>
+        <dt>2003–11</dt><dd data-es="Fundadora · Fushioko">Founder · Fushioko</dd>
+        <dt>1998–02</dt><dd data-es="Fundadora · Hoang Chu SL">Founder · Hoang Chu SL</dd></dl></div>
+      <div><span class="cap lbl" data-es="Técnicas de banco">Bench techniques</span>
+        <p class="tech" data-es="Aserrado y calado · Limado · Soldadura · Forja y embutido · Texturizado · Estampado · Pátina al fuego · <i class=&quot;it&quot;>Ilustración a mano</i>">Sawing &amp; piercing · Filing · Soldering · Forging &amp; doming · Texturing · Punch stamping · Heat patina · <i class="it">Hand rendering</i></p></div>
+    </div>
+    <div style="height:clamp(60px,8vw,110px)"></div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section id="next" aria-labelledby="next-h">
+  <div class="wrap">
+    <div class="sh"><h2 id="next-h" class="t" data-es="Siguiente">Next</h2><p class="note" data-es="Erasmus+ · Primavera 2027">Erasmus+ · Spring 2027</p></div>
+    <div class="next">
+      <div class="img"><span class="blk"></span><img src="img/borders-2.jpg" alt="Borders Reborn rendering in progress" loading="lazy"></div>
+      <div class="txt">
+        <div class="route"><span>MADRID</span><i></i><span>RIGA</span></div>
+        <p style="font-family:var(--display);font-size:clamp(26px,2.8vw,40px);line-height:1.12" data-es="Llevar <em>Borders Reborn</em> del papel a la plata, en la costa báltica.">Taking <em>Borders Reborn</em> from paper to silver, on the Baltic coast.</p>
+        <p data-es="Una estructura de plata inspirada en las vallas sostiene vidrio marino: fragmentos rotos que el agua ha suavizado. El Báltico, con su vidrio y su ámbar, es el lugar natural para construirla.">A silver structure inspired by fences holds sea glass: broken fragments softened by water. The Baltic, with its sea glass and amber, is the natural place to build it.</p>
+        <ol>
+          <li><b>01</b><span><strong data-es="Fabricar el collar en plata">Fabricate the collar in silver</strong></span></li>
+          <li><b>02</b><span><strong data-es="Engastar vidrio y ámbar locales">Set local sea glass and amber</strong></span></li>
+          <li><b>03</b><span><strong data-es="Ampliarlo a una pequeña serie">Grow it into a small series</strong></span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THANKS -->
+<section class="thanks" id="contact" aria-labelledby="thanks-h">
+  <span class="kanji" lang="ja">赤い糸</span>
+  <svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M-10,150 C220,130 400,170 540,130 C600,112 610,50 570,48 C520,46 530,110 600,125 C720,150 860,110 1000,100 C1080,94 1150,92 1210,90"/></svg>
+  <div class="wrap">
+    <h2 id="thanks-h" class="t" data-es="Mil<span class=&quot;it&quot;>gracias</span>">Thank<span class="it">you</span></h2>
+    <div class="foot">
+      <div>
+        <p class="cap">Gema Phuong Hoang Chu</p>
+        <a class="mail" href="https://www.linkedin.com/in/gemahoang/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">LinkedIn ↗</a>
+      </div>
+      <p class="cap" style="text-align:right" data-es="Un hilo invisible une<br>a quienes están destinados<br>a encontrarse.">An invisible thread<br>connects those who<br>are destined to meet.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<dialog class="case" id="case" aria-labelledby="csTitle">
+  <button class="close" id="csClose" type="button">Close</button>
+  <div class="cs">
+    <div class="l">
+      <p class="cap" id="csMeta"></p>
+      <h3 class="t" id="csTitle"></h3>
+      <span class="num" id="csNum"></span>
+      <p class="note" id="csSub"></p>
+      <p class="body" id="csBody"></p>
+      <dl id="csSpec"></dl>
+      <div class="ctl"><button type="button" id="csPrev">←</button><button type="button" id="csNext">→</button></div>
+    </div>
+    <div class="r" id="csImgs"></div>
+  </div>
+</dialog>
+<dialog class="lb" id="lb" aria-label="Image viewer"><button class="close" id="lbClose" type="button">Close</button><img id="lbImg" alt=""></dialog>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),root=document.documentElement;
+const W=[
+ {id:'cosmos',n:'01',title:'Cosmos Ring',kind:['Own design','Diseño propio'],cover:'cosmos-worn',tall:false,
+  sub:['Anankē — echoes of silence in inevitable motion.','Anankē — ecos del silencio en movimiento inevitable.'],
+  body:['Inspired by Anankē, primordial embodiment of necessity and cosmic order. Discs and a domed cup orbit one another: constant motion, interconnected forces. Nothing exists by chance.','Inspirado en Anankē, encarnación primordial de la necesidad y el orden cósmico. Discos y una cazoleta embutida orbitan entre sí: movimiento constante, fuerzas interconectadas. Nada existe por azar.'],
+  spec:[[['Materials','Materiales'],['Brass · Oxide patina','Latón · Pátina de óxido']],[['Techniques','Técnicas'],['Sawing · Texturing · Doming · Soldering · Heat patina','Aserrado · Texturizado · Embutido · Soldadura · Pátina al fuego']]],
+  imgs:['cosmos-final','cosmos-worn','cosmos-face','cosmos-p4','cosmos-p6']},
+ {id:'celestial',n:'02',title:'Celestial Balance',kind:['Own design','Diseño propio'],cover:'celestial-1',tall:true,
+  sub:['A core in orbit.','Un núcleo en órbita.'],
+  body:['A copper sphere turns freely inside a fixed brass ring. The warm contrast between the two metals follows the relation of core and orbit, and the constant small movement becomes a quiet expression of balance.','Una esfera de cobre gira libremente dentro de un aro fijo de latón. El contraste cálido entre los dos metales sigue la relación entre núcleo y órbita, y el pequeño movimiento constante se vuelve una expresión serena de equilibrio.'],
+  spec:[[['Materials','Materiales'],['Brass · Copper','Latón · Cobre']],[['Mechanism','Mecanismo'],['Free-rotating sphere','Esfera de giro libre']]],
+  imgs:['celestial-1','celestial-worn']},
+ {id:'llf',n:'03',title:'Love, Live, Forever',kind:['Academic workshop','Taller académico'],cover:'llf-worn',tall:false,
+  sub:['Fire and pressure on copper.','Fuego y presión sobre cobre.'],
+  body:['Each copper plate is shaped by pressure and stamped with a word. Heat oxidation draws out organic patinas, from warm copper to iridescent blues and violets.','Cada placa de cobre se moldea a presión y se estampa con una palabra. La oxidación por calor hace aparecer pátinas orgánicas, del cobre cálido a azules y violetas iridiscentes.'],
+  spec:[[['Techniques','Técnicas'],['Texturing · Punch stamping · Heat patina · Linking','Texturizado · Estampado · Pátina al fuego · Unión con anillas']]],
+  imgs:['llf-hand','llf-worn','llf-detail','llf-main','llf-chain']},
+ {id:'skin',n:'04',title:'Second Skin',kind:['Own design','Diseño propio'],cover:'skin-worn',tall:true,
+  sub:['Metal as an extension of the skin — protective and expressive.','El metal como extensión de la piel: protector y expresivo.'],
+  body:['Layered bands carry textures that evoke the natural patterns of skin. Heat oxidation brings out subtle, iridescent tones and gives each band a unique finish.','Bandas superpuestas con texturas que evocan los dibujos naturales de la piel. La oxidación por calor hace aparecer tonos iridiscentes sutiles y da a cada banda un acabado único.'],
+  spec:[[['Materials','Materiales'],['Copper · Oxide patina','Cobre · Pátina de óxido']]],
+  imgs:['skin-worn','skin-bench']},
+ {id:'rotating',n:'05',title:'Rotating Ring',kind:['Bench work','Trabajo de banco'],cover:'rotating-worn',tall:false,
+  sub:['Movement becomes part of the piece.','El movimiento forma parte de la pieza.'],
+  body:['A textured spinning band in alpaca turns around a flared brass base. It recalls the repeating cycles found in nature.','Un aro texturizado de alpaca gira alrededor de una base de latón abocinada. Recuerda los ciclos que se repiten en la naturaleza.'],
+  spec:[[['Materials','Materiales'],['Brass · Alpaca','Latón · Alpaca']],[['Techniques','Técnicas'],['Forming · Hammer texture · Soldering','Conformado · Textura de martillo · Soldadura']]],
+  imgs:['rotating-worn','rotating-1','rotating-2']},
+ {id:'earrings',n:'06',title:'Frame Earrings',kind:['Bench work','Trabajo de banco'],cover:'earring-worn',tall:true,
+  sub:['Geometry against a faceted line.','Geometría frente a una línea facetada.'],
+  body:['Soldered wire frames holding an articulated drop that sways with every movement of the head.','Marcos de hilo soldado que sostienen un colgante articulado que se balancea con cada movimiento de la cabeza.'],
+  spec:[[['Materials','Materiales'],['Brass wire and sheet','Hilo y chapa de latón']],[['Techniques','Técnicas'],['Sawing · Filing · Soldering','Aserrado · Limado · Soldadura']]],
+  imgs:['earring-worn','earring-bench-1','earring-bench-2']},
+ {id:'borders',n:'07',title:'Borders Reborn',kind:['Design proposal','Propuesta de diseño'],cover:'borders-main',tall:false,
+  sub:['Transformation, memory and the redefinition of boundaries.','Transformación, memoria y la redefinición de los límites.'],
+  body:['A silver structure inspired by fences holds pieces of sea glass: once-broken fragments softened by time and water. Rigid metal and luminous glass set up a dialogue between rupture and healing.','Una estructura de plata inspirada en las vallas sostiene vidrio marino: fragmentos que un día se rompieron y que el tiempo y el agua han suavizado. El metal rígido y el vidrio luminoso abren un diálogo entre ruptura y sanación.'],
+  spec:[[['Materials','Materiales'],['Silver · Sea glass','Plata · Vidrio marino']],[['Type','Tipo'],['Hand rendering','Ilustración a mano']]],
+  imgs:['borders-main','borders-2','borders-3','borders-4']}
+];
+let LANG='en';
+try{LANG=localStorage.getItem('rt-lang')||((navigator.language||'').startsWith('es')?'es':'en')}catch(e){}
+const L=a=>Array.isArray(a)?a[LANG==='es'?1:0]:a;
+const UI={en:{close:'Close',copy:'Copy email',copied:'Copied',sel:'Selected',dark:'Dark mode',light:'Light mode',lang:'Cambiar a español',open:'Open'},es:{close:'Cerrar',copy:'Copiar email',copied:'Copiado',sel:'Seleccionado',dark:'Modo oscuro',light:'Modo claro',lang:'Switch to English',open:'Abrir'}};
+
+/* index + collection */
+const idx=$('#idx'),track=$('#track');
+function renderLists(){
+  idx.innerHTML=W.map((w,i)=>`<li><button type="button" data-i="${i}" aria-label="${UI[LANG].open} ${w.title}"><span class="n">${w.n}</span><img class="th" src="img/${w.cover}.jpg" alt="" loading="lazy"><span class="nm">${w.title}</span><span class="ds cap">${L(w.kind)}</span><span class="arr" aria-hidden="true">→</span></button></li>`).join('');
+  track.innerHTML=W.map((w,i)=>`<button class="card${w.tall?' tall':''}" type="button" data-i="${i}" aria-label="${UI[LANG].open} ${w.title}"><span class="ph"><img src="img/${w.cover}.jpg" alt="" loading="lazy"><span class="n">${w.n}</span></span><span class="nm">${w.title}</span><span class="ds cap">${L(w.kind)}</span></button>`).join('');
+}
+renderLists();
+const peek=$('#peek'),peekImg=$('#peekImg');
+idx.addEventListener('mouseover',e=>{const b=e.target.closest('button');if(!b)return;peekImg.src='img/'+W[+b.dataset.i].cover+'.jpg';peek.classList.add('on')});
+idx.addEventListener('mouseleave',()=>peek.classList.remove('on'));
+let px=0,py=0,tx=0,ty=0;
+addEventListener('mousemove',e=>{tx=e.clientX+150;ty=e.clientY});
+(function follow(){px+=(tx-px)*.16;py+=(ty-py)*.16;peek.style.left=px+'px';peek.style.top=py+'px';requestAnimationFrame(follow)})();
+
+/* case sheet */
+const dlg=$('#case');let cur=0;
+function openCase(i){cur=(i+W.length)%W.length;const w=W[cur];
+  $('#csMeta').textContent=`${w.n} / 07 · ${L(w.kind)}`;$('#csTitle').textContent=w.title;$('#csNum').textContent=w.n;
+  $('#csSub').textContent=L(w.sub);$('#csBody').textContent=L(w.body);
+  $('#csSpec').innerHTML=w.spec.map(([k,v])=>`<dt>${L(k)}</dt><dd>${L(v)}</dd>`).join('');
+  $('#csImgs').innerHTML=w.imgs.map(s=>`<button type="button" data-lb><img src="img/${s}.jpg" alt="${w.title}"></button>`).join('');
+  $('#csImgs').scrollTop=0;dlg.scrollTop=0;if(!dlg.open)dlg.showModal();}
+document.addEventListener('click',e=>{const b=e.target.closest('#idx button,.card');if(b){peek.classList.remove('on');openCase(+b.dataset.i)}});
+$('#csClose').onclick=()=>dlg.close();$('#csPrev').onclick=()=>openCase(cur-1);$('#csNext').onclick=()=>openCase(cur+1);
+dlg.addEventListener('keydown',e=>{if(e.key==='ArrowRight')openCase(cur+1);if(e.key==='ArrowLeft')openCase(cur-1)});
+
+/* lightbox */
+const lb=$('#lb'),lbi=$('#lbImg');
+document.addEventListener('click',e=>{const b=e.target.closest('[data-lb]');if(!b)return;const im=b.querySelector('img');lbi.src=im.src;lbi.alt=im.alt;lb.showModal()});
+$('#lbClose').onclick=()=>lb.close();lb.addEventListener('click',e=>{if(e.target===lb)lb.close()});
+
+/* hero slides */
+const slides=[...document.querySelectorAll('#slides img')],names=['Cosmos Ring','Celestial Balance','Love, Live, Forever','Second Skin','Rotating Ring','Frame Earrings'];
+const dots=$('#dots');dots.innerHTML=slides.map((_,i)=>`<button type="button" aria-label="${names[i]}"></button>`).join('');
+let si=0,timer;
+function show(i){si=(i+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('on',k===si));[...dots.children].forEach((d,k)=>d.setAttribute('aria-current',k===si));$('#slideName').textContent=names[si]}
+$('#slides').classList.add('ready');show(0);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function auto(){clearInterval(timer);if(!reduce)timer=setInterval(()=>show(si+1),3800)}
+dots.addEventListener('click',e=>{const b=e.target.closest('button');if(b){show([...dots.children].indexOf(b));auto()}});auto();
+
+/* pinned horizontal collection */
+const hs=$('#collection');
+function setupHS(){
+  const mobile=innerWidth<900||reduce;
+  hs.classList.toggle('static',mobile);
+  if(mobile){hs.style.height='';track.style.transform='';return}
+  const dist=track.scrollWidth-innerWidth;
+  hs.style.height=(innerHeight+Math.max(dist,0))+'px';
+}
+function onHS(){
+  if(hs.classList.contains('static'))return;
+  const r=hs.getBoundingClientRect(),dist=track.scrollWidth-innerWidth;
+  const p=Math.min(Math.max(-r.top/(hs.offsetHeight-innerHeight||1),0),1);
+  track.style.transform=`translateX(${-p*Math.max(dist,0)}px)`;
+  $('#progBar').style.transform=`scaleX(${p})`;
+  $('#colCount').textContent=String(Math.min(W.length,Math.floor(p*W.length)+1)).padStart(2,'0')+' / 07';
+}
+
+/* page-long thread, drawn by scroll */
+const svg=$('#thread'),path=$('#threadPath');let len=0;
+function buildThread(){
+  const main=$('main'),h=main.scrollHeight,w=main.clientWidth;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.style.height=h+'px';
+  const secs=[...main.querySelectorAll(':scope > section')].slice(1).map(s=>s.offsetTop+s.offsetHeight*.5);
+  const y0=$('.hero').offsetHeight+30;let d=`M${-10},${y0}`;
+  const pts=[w*.55,...secs.map((y,i)=>i%2?w*.12:w*.9)];
+  let prevY=y0;
+  secs.forEach((y,i)=>{const x=pts[i+1];const cy=(prevY+y)/2;d+=` C${pts[i]},${cy} ${x},${cy} ${x},${y}`;prevY=y});
+  d+=` C${w*.5},${h-60} ${w*.7},${h-40} ${w+10},${h-30}`;
+  path.setAttribute('d',d);len=path.getTotalLength();path.style.strokeDasharray=len;onThread();
+}
+function onThread(){if(!len)return;const max=document.documentElement.scrollHeight-innerHeight;const p=Math.min(Math.max((scrollY+innerHeight*.35)/(max+innerHeight*.35),0),1);path.style.strokeDashoffset=reduce?0:len*(1-p)}
+
+const bar=$('#bar');
+const heroEl=$('#hero'),ws=[...document.querySelectorAll('.hero .word')],stage=$('#stage');
+function onHero(){if(reduce||innerWidth<=760){ws.forEach(w=>w.style.transform='');stage.style.transform='';return}
+  const p=Math.min(Math.max(scrollY/heroEl.offsetHeight,0),1);
+  ws.forEach(w=>w.style.transform=`translateX(${(w.classList.contains('w1')?-1:1)*p*28}vw)`);
+  stage.style.transform=`translate(-50%,calc(-52% + ${p*18}vh)) scale(${1-p*.12})`;clipGhost();}
+function clipGhost(){const rs=['#slides','.hero .b1','.hero .b2'].map(s=>$(s).getBoundingClientRect());const sr={top:Math.min(...rs.map(r=>r.top)),left:Math.min(...rs.map(r=>r.left)),right:Math.max(...rs.map(r=>r.right)),bottom:Math.max(...rs.map(r=>r.bottom))};document.querySelectorAll('.hero .ghost').forEach(g=>{const gr=g.getBoundingClientRect();g.style.clipPath=`inset(${sr.top-gr.top}px ${gr.right-sr.right}px ${gr.bottom-sr.bottom}px ${sr.left-gr.left}px)`})}
+function onScroll(){bar.classList.toggle('solid',scrollY>30);onHS();onThread();onHero()}
+addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});
+function layout(){setupHS();onHS();buildThread();onHero();clipGhost()}
+addEventListener('resize',()=>{clearTimeout(layout.t);layout.t=setTimeout(layout,150)});
+addEventListener('load',layout);layout();
+
+/* language + theme */
+const els=[...document.querySelectorAll('[data-es]')];els.forEach(el=>el.dataset.en=el.innerHTML);
+function applyLang(){root.lang=LANG;els.forEach(el=>el.innerHTML=LANG==='es'?el.dataset.es:el.dataset.en);
+  const b=$('#langBtn');b.textContent=LANG==='es'?'EN':'ES';b.setAttribute('aria-label',UI[LANG].lang);
+  $('#csClose').textContent=UI[LANG].close;$('#lbClose').textContent=UI[LANG].close;
+  renderLists();if(dlg.open)openCase(cur);syncTheme();setTimeout(layout,50)}
+$('#langBtn').addEventListener('click',()=>{LANG=LANG==='es'?'en':'es';try{localStorage.setItem('rt-lang',LANG)}catch(e){}applyLang()});
+const isDark=()=>root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+function syncTheme(){const b=$('#themeBtn'),d=isDark();b.setAttribute('aria-pressed',d);b.setAttribute('aria-label',d?UI[LANG].light:UI[LANG].dark)}
+try{const t=localStorage.getItem('rt-theme');if(t)root.dataset.theme=t}catch(e){}
+$('#themeBtn').addEventListener('click',()=>{root.dataset.theme=isDark()?'light':'dark';try{localStorage.setItem('rt-theme',root.dataset.theme)}catch(e){}syncTheme()});
+
+applyLang();
+})();
+</script>
